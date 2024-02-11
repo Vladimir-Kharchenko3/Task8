@@ -1,19 +1,72 @@
 from logger import input_data, print_data
 
 
-def interface():
-    print('Р”РѕР±СЂС‹Р№ РґРµРЅСЊ! Р­С‚Рѕ Р±РѕС‚-РїРѕРјРѕС‰РЅРёРє. \n'
-          'Р§С‚Рѕ РІС‹ С…РѕС‚РёС‚Рµ СЃРґРµР»Р°С‚СЊ? \n'
-          '1 - Р—Р°РїРёСЃР°С‚СЊ РґР°РЅРЅС‹Рµ \n'
-          '2 - Р’С‹РІРµСЃС‚Рё РґР°РЅРЅС‹Рµ')
-    command = int(input('Р’Р°С€ РІС‹Р±РѕСЂ: '))
+# def interface():
+#     print('Добрй день! Это бот помошник. \n'
+#           'Что вы хотите сделать? \n'
+#           '1 - Записать данные \n'
+#           '2 - Вывести данные'
+#           '3 - Копировать данные \n')
+#     command = int(input('Ваш выбор: '))
 
-    while command < 1 or command > 2:
-        command = int(input('РћС€РёР±РєР°! Р’Р°С€ РІС‹Р±РѕСЂ: '))
+#     while command < 1 or command > 2:
+#         command = int(input('Ошибка! Ваш выбор: '))
+
+#     if command == 1:
+#         input_data()
+#     elif command == 2:
+#         print_data()
+#     elif command == 3:
+#         record_number = int (input('Введите номер записи, которую нужно скопировать: '))
+#         copy_record ('data_first_variant.csv', 'data_second_variant.csv', record_number)
+
+# interface()
+
+def copy_record(source_filename, destination_filename, record_number):
+    try:
+        with open(source_filename, 'r', encoding='utf-8') as source_file:
+            data = source_file.readlines()
+            record_to_copy = data[(record_number - 1) * 5:record_number * 5]
+
+        with open(destination_filename, 'a', encoding='utf-8') as destination_file:
+            destination_file.writelines(record_to_copy)
+
+        print(f'Запись {record_number} скопирована из {source_filename} в {destination_filename}.')
+    except FileNotFoundError:
+        print(f"Ошибка: Файл {source_filename} не найден.")
+
+def print_data(filename):
+    try:
+        with open(filename, 'r', encoding='utf-8') as file:
+            data = file.readlines()
+            print('Содержимое файла:')
+            print(''.join(data))
+    except FileNotFoundError:
+        print(f"Ошибка: Файл {filename} не найден.")
+
+def interface():
+    print('Добрый день! Это бот-помощник.\n'
+          'Что вы хотите сделать?\n'
+          '1 - Записать данные\n'
+          '2 - Вывести данные\n'
+          '3 - Скопировать запись из одного файла в другой')
+    
+    command = int(input('Ваш выбор: '))
+
+    while command < 1 or command > 3:
+        command = int(input('Ошибка! Ваш выбор: '))
 
     if command == 1:
         input_data()
     elif command == 2:
-        print_data()
+        print_data('data_first_variant.csv')
+        print_data('data_second_variant.csv')
+    elif command == 3:
+        record_number = int(input('Введите номер записи, которую нужно скопировать: '))
+        copy_record('data_first_variant.csv', 'data_second_variant.csv', record_number)
 
+# Остальной код остается без изменений
+# ...
+
+# Вызов функции interface() для начала взаимодействия с пользователем
 interface()
